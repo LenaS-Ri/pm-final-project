@@ -67,6 +67,7 @@ h1{margin:0;font-size:34px;line-height:1.1;letter-spacing:-.03em}
 .cut-card p{margin:0 0 10px;color:#6b7280;font-size:12px;line-height:1.45}
 .footer-note{margin-top:16px;color:var(--muted);font-size:12px;text-align:right}
 body.compact .rationale,body.compact .meta{display:none}
+.cut-card .meta{display:grid}
 @media (max-width:1100px){.roadmap{grid-template-columns:1fr}.cut-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:700px){.page{padding:20px}.header{align-items:flex-start;flex-direction:column}.team-pill{white-space:normal}.cut-grid{grid-template-columns:1fr}}
 </style>
@@ -115,32 +116,32 @@ const lanes = [
      r:"No onboarding means no activated users, making it a prerequisite for moving the M6 Active Card Rate.",
      d:"Connects existing identity, agreement and approval capabilities into one card application and activation flow."},
     {name:"Virtual Card Provisioning", q:"major", qn:"Major Project", v:4, e:3,
-     r:"Lena needs an immediately usable card after approval; this turns onboarding into real payment behaviour.",
+     r:"Lena needs an immediately usable card, but provisioning is infrastructure-heavy despite existing issuing capabilities.",
      d:"Issues and activates the consumer virtual Mastercard directly after successful onboarding."}
   ]},
-  {id:"next", title:"NEXT", desc:"Following 1–2 sprints", cards:[
+  {id:"next", title:"NEXT", desc:"Following 1\u20132 sprints", cards:[
     {name:"Unified Card + BNPL Overview", q:"major", qn:"Major Project", v:5, e:3,
-     r:"Directly solves Lena's fragmented what-do-I-owe friction and gives her a reason to come back to Riverty.",
+     r:"Directly solves Lena's fragmented-payment friction and gives Riverty a differentiated reason for repeat usage.",
      d:"Adds card purchases to the existing Riverty purchase overview alongside BNPL transactions."},
     {name:"Card Transaction Enrichment", q:"quick", qn:"Quick Win", v:4, e:2,
-     r:"Clear merchant and purchase details are necessary for Lena to trust and understand the unified overview.",
+     r:"Clear merchant and transaction information is necessary for Lena to trust and understand the unified overview.",
      d:"Turns raw processor data into readable merchant names, locations, amounts and purchase details."},
     {name:"Flexible Card Repayment", q:"major", qn:"Major Project", v:5, e:5,
-     r:"Strongest link to Lena's need for control, but credit, risk and regulatory complexity require discovery and architecture work first.",
+     r:"Strongest link to Lena's need for control, but credit, risk and regulatory complexity make it unrealistic for a 3-month MVP.",
      d:"Lets eligible card purchases use Riverty flexible-payment options such as Pay Later / Flex."}
   ]},
   {id:"later", title:"LATER", desc:"Backlog", cards:[
     {name:"Apple Pay / Google Pay", q:"major", qn:"Major Project", v:4, e:4,
-     r:"Strong fit for a mobile-first persona and repeat usage, but wallet certification can wait until the core loop works.",
+     r:"Strong fit for a mobile-first persona and repeat usage, but wallet certification and integration can consume substantial capacity.",
      d:"Lets users add the Riverty Card to their preferred mobile wallet."}
   ]}
 ];
 
 const cuts = [
-  {name:"Merchant Rewards & Cashback", q:"sink", qn:"Time Sinker", r:"Helps merchant alignment, but does little to fix Lena's core payment-control problem."},
-  {name:"Smart Spending Insights", q:"sink", qn:"Time Sinker", r:"Useful engagement layer, but it does not prove the card proposition or fix the Moment of Misery."},
-  {name:"Physical Card", q:"sink", qn:"Time Sinker", r:"Lena is mobile-first; physical fulfilment adds operational complexity before product-market signal exists."},
-  {name:"Premium Card Tier", q:"sink", qn:"Time Sinker", r:"Adds complexity before Riverty has proven users want the basic card relationship."}
+  {name:"Merchant Rewards & Cashback", q:"sink", qn:"Time Sinker", v:3, e:4, r:"Helps merchant alignment and acquisition, but does little to fix Lena's core payment-control problem."},
+  {name:"Smart Spending Insights", q:"sink", qn:"Time Sinker", v:2, e:3, r:"Useful engagement layer, but spending analytics do not materially prove the card proposition or fix the Moment of Misery."},
+  {name:"Physical Card", q:"sink", qn:"Time Sinker", v:3, e:4, r:"Expands acceptance, but Lena is mobile-first and physical fulfilment adds operational complexity before product-market signal exists."},
+  {name:"Premium Card Tier", q:"sink", qn:"Time Sinker", v:1, e:4, r:"Adds complexity before Riverty has proven that users want the basic card relationship at all."}
 ];
 
 const roadmap = document.getElementById("roadmap");
@@ -174,7 +175,7 @@ const cutGrid = document.getElementById("cutGrid");
 cuts.forEach(c => {
   const a = document.createElement("article");
   a.className = "cut-card";
-  a.innerHTML = `<h3>${c.name}</h3><p>${c.r}</p><span class="badge ${c.q}"><span class="dot"></span>${c.qn}</span>`;
+  a.innerHTML = `<h3>${c.name}</h3><p>${c.r}</p><div class="meta" style="margin:0 0 10px"><div class="metric"><span class="metric-label">Value</span><strong>${c.v} / 5</strong></div><div class="metric"><span class="metric-label">Effort</span><strong>${c.e} / 5</strong></div></div><span class="badge ${c.q}"><span class="dot"></span>${c.qn}</span>`;
   cutGrid.appendChild(a);
 });
 
