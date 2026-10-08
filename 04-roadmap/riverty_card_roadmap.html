@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Riverty Consumer Card Roadmap</title>
+<style>
+:root{
+  --bg:#f6f7f9;--panel:#fff;--text:#16181d;--muted:#6b7280;--border:#e5e7eb;
+  --now:#6d28d9;--next:#2563eb;--later:#64748b;--cut:#b91c1c;
+  --quick-bg:#dcfce7;--quick-fg:#166534;
+  --major-bg:#ede9fe;--major-fg:#5b21b6;
+  --fill-bg:#e0f2fe;--fill-fg:#075985;
+  --sink-bg:#fee2e2;--sink-fg:#991b1b;
+  --shadow:0 10px 28px rgba(17,24,39,.08);--radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+.page{max-width:1440px;margin:0 auto;padding:32px}
+.header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.brand{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--now)}
+h1{margin:0;font-size:34px;line-height:1.1;letter-spacing:-.03em}
+.sub{margin:0;color:var(--muted);font-size:15px}
+.team-pill{background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:999px;padding:12px 16px;font-size:14px;font-weight:600;color:#374151;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:24px}
+.legend-item,.badge{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.quick{background:var(--quick-bg);color:var(--quick-fg)}
+.major{background:var(--major-bg);color:var(--major-fg)}
+.fill{background:var(--fill-bg);color:var(--fill-fg)}
+.sink{background:var(--sink-bg);color:var(--sink-fg)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{border:1px solid var(--border);background:var(--panel);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#374151}
+.filter.active{background:var(--text);color:#fff;border-color:var(--text)}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);cursor:pointer;margin-left:auto}
+.toggle input{accent-color:var(--now)}
+.roadmap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:start}
+.lane{background:rgba(255,255,255,.72);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;min-height:420px}
+.lane-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.lane-title{margin:0;font-size:17px}
+.lane-desc{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.lane-count{min-width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:#f3f4f6;color:#374151}
+.lane.now .lane-header{box-shadow:inset 4px 0 0 var(--now)}
+.lane.next .lane-header{box-shadow:inset 4px 0 0 var(--next)}
+.lane.later .lane-header{box-shadow:inset 4px 0 0 var(--later)}
+.cards{padding:16px;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(17,24,39,.05);transition:transform .18s,box-shadow .18s,border-color .18s,opacity .18s;cursor:pointer;outline:none}
+.card:hover,.card:focus{transform:translateY(-2px);box-shadow:0 10px 22px rgba(17,24,39,.09);border-color:#cbd5e1}
+.card.dim{opacity:.25}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.card h3{margin:0;font-size:16px;line-height:1.25}
+.rationale{margin:0;color:#4b5563;line-height:1.55;font-size:13px}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.metric{background:#f9fafb;border:1px solid #eef0f3;border-radius:12px;padding:9px 10px}
+.metric-label{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;font-weight:700}
+.metric strong{font-size:13px}
+.detail{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);font-size:12px;color:#4b5563;line-height:1.5}
+.card.open .detail{display:block}
+.cut-section{margin-top:26px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.cut-header{padding:18px 20px;border-bottom:1px solid var(--border);box-shadow:inset 4px 0 0 var(--cut);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.cut-header h2{margin:0;font-size:18px}
+.cut-header p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.cut-grid{padding:16px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.cut-card{border:1px dashed #fecaca;background:#fffafa;border-radius:14px;padding:14px}
+.cut-card h3{margin:0 0 8px;font-size:14px}
+.cut-card p{margin:0 0 10px;color:#6b7280;font-size:12px;line-height:1.45}
+.footer-note{margin-top:16px;color:var(--muted);font-size:12px;text-align:right}
+body.compact .rationale,body.compact .meta{display:none}
+@media (max-width:1100px){.roadmap{grid-template-columns:1fr}.cut-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.page{padding:20px}.header{align-items:flex-start;flex-direction:column}.team-pill{white-space:normal}.cut-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="page">
+  <header class="header">
+    <div class="brand">
+      <div class="eyebrow">Riverty · 1st Consumer Card</div>
+      <h1>3-Month Product Roadmap</h1>
+      <p class="sub">Apply → receive card → spend → understand activity inside Riverty.</p>
+    </div>
+    <div class="team-pill">5 Engineers · 1 QA · 1 Designer · 3 Months</div>
+  </header>
+
+  <div class="legend">
+    <span class="legend-item quick"><span class="dot"></span>Quick Win</span>
+    <span class="legend-item major"><span class="dot"></span>Major Project</span>
+    <span class="legend-item fill"><span class="dot"></span>Fill-In</span>
+    <span class="legend-item sink"><span class="dot"></span>Time Sinker</span>
+    <div class="filters" id="filters">
+      <button class="filter active" data-f="all">All</button>
+      <button class="filter" data-f="quick">Quick Win</button>
+      <button class="filter" data-f="major">Major Project</button>
+    </div>
+    <label class="toggle"><input id="compactToggle" type="checkbox" />Compact view</label>
+  </div>
+
+  <section class="roadmap" id="roadmap"></section>
+
+  <section class="cut-section">
+    <div class="cut-header">
+      <div><h2>Cut List</h2><p>Deliberately excluded from the 3-month scope.</p></div>
+      <span class="badge sink">Not MVP-Critical</span>
+    </div>
+    <div class="cut-grid" id="cutGrid"></div>
+  </section>
+
+  <div class="footer-note">Primary metric: M6 Active Card Rate (≥50% of activated cardholders with ≥2 transactions in Month 6) · Guardrail: partner-merchant checkout conversion decline ≤1pp</div>
+</main>
+
+<script>
+const lanes = [
+  {id:"now", title:"NOW", desc:"3-week sprint", cards:[
+    {name:"Consumer Card Onboarding Journey", q:"major", qn:"Major Project", v:5, e:4,
+     r:"No onboarding means no activated users, making it a prerequisite for moving the M6 Active Card Rate.",
+     d:"Connects existing identity, agreement and approval capabilities into one card application and activation flow."},
+    {name:"Virtual Card Provisioning", q:"major", qn:"Major Project", v:4, e:3,
+     r:"Lena needs an immediately usable card after approval; this turns onboarding into real payment behaviour.",
+     d:"Issues and activates the consumer virtual Mastercard directly after successful onboarding."}
+  ]},
+  {id:"next", title:"NEXT", desc:"Following 1–2 sprints", cards:[
+    {name:"Unified Card + BNPL Overview", q:"major", qn:"Major Project", v:5, e:3,
+     r:"Directly solves Lena's fragmented what-do-I-owe friction and gives her a reason to come back to Riverty.",
+     d:"Adds card purchases to the existing Riverty purchase overview alongside BNPL transactions."},
+    {name:"Card Transaction Enrichment", q:"quick", qn:"Quick Win", v:4, e:2,
+     r:"Clear merchant and purchase details are necessary for Lena to trust and understand the unified overview.",
+     d:"Turns raw processor data into readable merchant names, locations, amounts and purchase details."},
+    {name:"Flexible Card Repayment", q:"major", qn:"Major Project", v:5, e:5,
+     r:"Strongest link to Lena's need for control, but credit, risk and regulatory complexity require discovery and architecture work first.",
+     d:"Lets eligible card purchases use Riverty flexible-payment options such as Pay Later / Flex."}
+  ]},
+  {id:"later", title:"LATER", desc:"Backlog", cards:[
+    {name:"Apple Pay / Google Pay", q:"major", qn:"Major Project", v:4, e:4,
+     r:"Strong fit for a mobile-first persona and repeat usage, but wallet certification can wait until the core loop works.",
+     d:"Lets users add the Riverty Card to their preferred mobile wallet."}
+  ]}
+];
+
+const cuts = [
+  {name:"Merchant Rewards & Cashback", q:"sink", qn:"Time Sinker", r:"Helps merchant alignment, but does little to fix Lena's core payment-control problem."},
+  {name:"Smart Spending Insights", q:"sink", qn:"Time Sinker", r:"Useful engagement layer, but it does not prove the card proposition or fix the Moment of Misery."},
+  {name:"Physical Card", q:"sink", qn:"Time Sinker", r:"Lena is mobile-first; physical fulfilment adds operational complexity before product-market signal exists."},
+  {name:"Premium Card Tier", q:"sink", qn:"Time Sinker", r:"Adds complexity before Riverty has proven users want the basic card relationship."}
+];
+
+const roadmap = document.getElementById("roadmap");
+lanes.forEach(l => {
+  const el = document.createElement("div");
+  el.className = "lane " + l.id;
+  el.innerHTML = `<div class="lane-header"><div><h2 class="lane-title">${l.title}</h2><p class="lane-desc">${l.desc}</p></div><div class="lane-count">${l.cards.length}</div></div><div class="cards"></div>`;
+  const wrap = el.querySelector(".cards");
+  l.cards.forEach(c => {
+    const a = document.createElement("article");
+    a.className = "card";
+    a.tabIndex = 0;
+    a.dataset.q = c.q;
+    a.innerHTML = `
+      <div class="card-top"><h3>${c.name}</h3><span class="badge ${c.q}"><span class="dot"></span>${c.qn}</span></div>
+      <p class="rationale">${c.r}</p>
+      <div class="meta">
+        <div class="metric"><span class="metric-label">Value</span><strong>${c.v} / 5</strong></div>
+        <div class="metric"><span class="metric-label">Effort</span><strong>${c.e} / 5</strong></div>
+      </div>
+      <div class="detail"><strong>What it does:</strong> ${c.d}</div>`;
+    const toggle = () => a.classList.toggle("open");
+    a.addEventListener("click", toggle);
+    a.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+    wrap.appendChild(a);
+  });
+  roadmap.appendChild(el);
+});
+
+const cutGrid = document.getElementById("cutGrid");
+cuts.forEach(c => {
+  const a = document.createElement("article");
+  a.className = "cut-card";
+  a.innerHTML = `<h3>${c.name}</h3><p>${c.r}</p><span class="badge ${c.q}"><span class="dot"></span>${c.qn}</span>`;
+  cutGrid.appendChild(a);
+});
+
+document.getElementById("compactToggle").addEventListener("change", e => {
+  document.body.classList.toggle("compact", e.target.checked);
+});
+
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest(".filter");
+  if (!b) return;
+  document.querySelectorAll(".filter").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  const f = b.dataset.f;
+  document.querySelectorAll(".card").forEach(c => {
+    c.classList.toggle("dim", f !== "all" && c.dataset.q !== f);
+  });
+});
+</script>
+</body>
+</html>
