@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riverty Unified Overview Prototype</title>
+  <style>
+    :root {
+      --riverty-green:#005740;
+      --riverty-green-2:#0c6b53;
+      --mint:#dff4ec;
+      --mint-2:#eef8f4;
+      --cream:#fbfaf7;
+      --ink:#0f1f1b;
+      --muted:#66736e;
+      --line:#dbe4e0;
+      --white:#ffffff;
+      --warning:#fff3d8;
+      --warning-ink:#775400;
+      --success:#e5f5ec;
+      --success-ink:#146b43;
+      --neutral:#eef2f1;
+      --danger:#fce9e8;
+      --danger-ink:#8f2e27;
+      --shadow:0 18px 50px rgba(9, 54, 43, .14);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(223,244,236,.85), transparent 32%),
+        linear-gradient(180deg, #f8fbf9 0%, #eef5f1 100%);
+      color: var(--ink);
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) 1fr;
+      gap: 32px;
+      padding: 32px;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .context {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px 6px;
+    }
+
+    .brand-lockup { margin-bottom: 28px; }
+    .logo {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -1.8px;
+      color: var(--riverty-green);
+    }
+    .kicker {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 700;
+    }
+
+    .context-card {
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(0,87,64,.10);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(10px);
+    }
+    .context-card h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+    .context-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--riverty-green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .prototype-note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 20px;
+    }
+
+    .stage-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .phone {
+      width: 390px;
+      height: 820px;
+      max-height: calc(100vh - 64px);
+      background: var(--cream);
+      border: 10px solid #111;
+      border-radius: 42px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .statusbar {
+      height: 30px;
+      padding: 8px 18px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      flex: 0 0 auto;
+      background: var(--cream);
+    }
+
+    .app {
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .screen {
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 18px 24px;
+      scrollbar-width: none;
+    }
+    .screen::-webkit-scrollbar { display:none; }
+
+    .toprow {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 14px;
+    }
+    .app-logo {
+      color: var(--riverty-green);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -1px;
+    }
+    .avatar {
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:var(--mint);
+      color:var(--riverty-green);
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      font-size:13px;
+    }
+    .back {
+      width:36px;
+      height:36px;
+      display:grid;
+      place-items:center;
+      border:none;
+      background:var(--white);
+      border-radius:50%;
+      color:var(--ink);
+      font-size:20px;
+      box-shadow:0 4px 14px rgba(14,48,39,.08);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 27px;
+      line-height: 1.1;
+      letter-spacing: -.04em;
+    }
+    .lead {
+      margin: 7px 0 18px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .summary {
+      background:var(--riverty-green);
+      color:white;
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .summary:after {
+      content:"";
+      position:absolute;
+      width:120px;
+      height:120px;
+      right:-35px;
+      top:-45px;
+      border-radius:50%;
+      background:rgba(255,255,255,.09);
+    }
+    .summary-label { font-size:12px; opacity:.78; }
+    .summary-value { font-size:28px; font-weight:800; margin:4px 0 10px; letter-spacing:-.03em; }
+    .summary-row { display:flex; gap:16px; font-size:12px; opacity:.9; }
+
+    .section-title {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin: 18px 2px 10px;
+    }
+    .section-title strong { font-size:15px; }
+    .section-title span { font-size:12px; color:var(--muted); }
+
+    .tx-list { display:flex; flex-direction:column; gap:10px; }
+    .tx-card {
+      width:100%;
+      border:1px solid var(--line);
+      background:var(--white);
+      border-radius:18px;
+      padding:14px;
+      display:grid;
+      grid-template-columns:44px 1fr auto;
+      gap:11px;
+      align-items:center;
+      text-align:left;
+      color:inherit;
+      transition:.15s ease;
+    }
+    .tx-card:hover { transform:translateY(-1px); box-shadow:0 8px 18px rgba(10,60,46,.08); }
+    .merchant-icon {
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      color:var(--riverty-green);
+      background:var(--mint-2);
+      font-size:12px;
+    }
+    .merchant-name { font-weight:750; font-size:14px; margin-bottom:3px; }
+    .tx-meta { font-size:11px; color:var(--muted); line-height:1.4; }
+    .source { font-weight:700; color:#43524d; }
+    .amount { font-weight:800; font-size:14px; text-align:right; }
+    .status-pill {
+      margin-top:5px;
+      display:inline-flex;
+      padding:4px 7px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .status-pending, .status-open { background:var(--warning); color:var(--warning-ink); }
+    .status-completed, .status-paid { background:var(--neutral); color:#46524e; }
+    .status-refunded { background:var(--success); color:var(--success-ink); }
+    .status-reversed { background:var(--danger); color:var(--danger-ink); }
+
+    .bottom-nav {
+      flex:0 0 auto;
+      height:68px;
+      background:rgba(255,255,255,.95);
+      border-top:1px solid var(--line);
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      padding:8px 10px 10px;
+    }
+    .nav-item {
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:700;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+    }
+    .nav-item.active { color:var(--riverty-green); }
+    .nav-icon { font-size:18px; }
+
+    .detail-hero {
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:20px;
+      margin-top:12px;
+      text-align:center;
+    }
+    .detail-merchant {
+      width:58px;
+      height:58px;
+      margin:0 auto 12px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      background:var(--mint);
+      color:var(--riverty-green);
+    }
+    .detail-title { font-weight:800; font-size:18px; }
+    .detail-amount { font-size:32px; font-weight:850; letter-spacing:-.04em; margin:6px 0 4px; }
+    .detail-source { font-size:12px; color:var(--muted); }
+
+    .info-card {
+      margin-top:12px;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:4px 14px;
+    }
+    .info-row {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:13px 0;
+      border-bottom:1px solid #edf1ef;
+      font-size:13px;
+    }
+    .info-row:last-child { border-bottom:none; }
+    .info-row span:first-child { color:var(--muted); }
+    .info-row strong { text-align:right; max-width:60%; }
+
+    .timeline {
+      margin-top:14px;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+    }
+    .timeline h3 { margin:0 0 14px; font-size:14px; }
+    .event {
+      display:grid;
+      grid-template-columns:18px 1fr;
+      gap:10px;
+      position:relative;
+      padding-bottom:14px;
+      font-size:12px;
+    }
+    .event:last-child { padding-bottom:0; }
+    .event:not(:last-child):after {
+      content:"";
+      position:absolute;
+      left:7px;
+      top:15px;
+      width:2px;
+      bottom:0;
+      background:var(--line);
+    }
+    .event-dot {
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:var(--riverty-green);
+      border:4px solid var(--mint);
+      z-index:1;
+    }
+    .event strong { display:block; margin-bottom:2px; }
+    .event span { color:var(--muted); }
+
+    .explain {
+      margin-top:12px;
+      border-radius:16px;
+      padding:13px 14px;
+      font-size:12px;
+      line-height:1.45;
+      background:var(--mint-2);
+      color:#345048;
+    }
+
+    .confirm {
+      padding-top:32px;
+      text-align:center;
+    }
+    .check {
+      width:68px;
+      height:68px;
+      border-radius:50%;
+      margin:0 auto 18px;
+      background:var(--success);
+      color:var(--success-ink);
+      display:grid;
+      place-items:center;
+      font-size:30px;
+      font-weight:800;
+    }
+    .confirm h2 { font-size:26px; }
+    .confirm p { color:var(--muted); font-size:13px; line-height:1.5; }
+    .refund-card {
+      margin:22px 0 14px;
+      background:var(--white);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      text-align:left;
+    }
+    .refund-card .row { display:flex; justify-content:space-between; gap:12px; margin-bottom:10px; font-size:13px; }
+    .refund-card .row:last-child { margin-bottom:0; }
+    .refund-card .row span { color:var(--muted); }
+    .refund-card .row strong { text-align:right; }
+
+    .primary {
+      width:100%;
+      border:none;
+      padding:14px 16px;
+      border-radius:14px;
+      background:var(--riverty-green);
+      color:white;
+      font-weight:800;
+      margin-top:12px;
+    }
+
+    .demo-controls {
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+    }
+    .demo-controls button {
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.7);
+      padding:9px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:700;
+      color:var(--muted);
+    }
+    .demo-controls button.active {
+      border-color:rgba(0,87,64,.25);
+      background:var(--mint);
+      color:var(--riverty-green);
+    }
+
+    .source-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 900px) {
+      .shell { grid-template-columns:1fr; padding:18px; }
+      .context { display:none; }
+      .phone { max-height:none; height:min(820px, calc(100vh - 36px)); }
+    }
+
+    @media (max-width: 430px) {
+      body { background:var(--cream); }
+      .shell { padding:0; }
+      .phone { width:100vw; height:100vh; max-height:none; border:0; border-radius:0; box-shadow:none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    import React, { useState } from 'https://esm.sh/react@18.3.1';
+    import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
+
+    const e = React.createElement;
+
+    const initialTransactions = [
+      { id:'t1', merchant:'Zalando', initials:'ZA', amount:'€89.90', date:'8 Oct', source:'Paid with Riverty', status:'Paid', paidOn:'9 Oct', location:'Online', details:'Paid on 9 Oct' },
+      { id:'t2', merchant:'REWE', initials:'RE', amount:'€42.30', date:'8 Oct', source:'Paid with Riverty Card', status:'Completed', location:'Köln Ehrenstraße', details:'Card purchase' },
+      { id:'t3', merchant:'H&M', initials:'H&M', amount:'€89.00', date:'7 Oct', source:'Paid with Riverty Card', status:'Refunded', location:'Köln Schildergasse', details:'Refunded in full', refund:'€89.00' },
+      { id:'t4', merchant:'MediaMarkt', initials:'MM', amount:'€499.00', date:'6 Oct', source:'Paid with Riverty', status:'Open', dueText:'Due in 19 days', location:'Online', details:'Due in 19 days' },
+      { id:'t5', merchant:'DB', initials:'DB', amount:'€18.40', date:'5 Oct', source:'Paid with Riverty Card', status:'Reversed', location:'Köln Hbf', details:'Authorisation reversed' }
+    ];
+
+    function statusClass(status){ return 'status-pill status-' + status.toLowerCase(); }
+
+    function statusDetail(tx){
+      if(tx.source==='Paid with Riverty'){
+        if(tx.status==='Paid') return 'Paid on '+tx.paidOn;
+        if(tx.status==='Refunded') return 'Refunded on '+(tx.refundedOn || tx.date);
+        if(tx.status==='Open') return tx.dueText || 'Due date unavailable';
+      }
+      return tx.details;
+    }
+
+    function PhoneStatus(){
+      return e('div',{className:'statusbar'}, e('span',null,'9:41'), e('span',null,'● ● ●  92%'));
+    }
+
+    function BottomNav(){
+      return e('div',{className:'bottom-nav'},
+        e('button',{className:'nav-item active'}, e('span',{className:'nav-icon'},'▤'), e('span',null,'Overview')),
+        e('button',{className:'nav-item'}, e('span',{className:'nav-icon'},'◎'), e('span',null,'Payments')),
+        e('button',{className:'nav-item'}, e('span',{className:'nav-icon'},'◯'), e('span',null,'Profile'))
+      );
+    }
+
+    function Overview({transactions,onOpen}){
+      return e(React.Fragment,null,
+        e('div',{className:'screen'},
+          e('div',{className:'toprow'}, e('div',{className:'app-logo'},'riverty'), e('div',{className:'avatar'},'LS')),
+          e('h2',null,'Your payments'),
+          e('p',{className:'lead'},'Everything you paid with Riverty, in one place.'),
+          e('div',{className:'summary'},
+            e('div',{className:'summary-label'},'Open & upcoming'),
+            e('div',{className:'summary-value'},'€588.90'),
+            e('div',{className:'summary-row'}, e('span',null,'Next due 14 Oct'), e('span',null,'1 item needs attention'))
+          ),
+          e('div',{className:'section-title'}, e('strong',null,'Recent activity'), e('span',null,'Card + Riverty')),
+          e('div',{className:'tx-list'}, transactions.map(tx =>
+            e('button',{key:tx.id,className:'tx-card',onClick:()=>onOpen(tx.id)},
+              e('div',{className:'merchant-icon'},tx.initials),
+              e('div',null,
+                e('div',{className:'merchant-name'},tx.merchant),
+                e('div',{className:'tx-meta'}, e('span',{className:'source'},tx.source),' · ',tx.date),
+                e('div',{className:'tx-meta'},statusDetail(tx))
+              ),
+              e('div',null,
+                e('div',{className:'amount'},tx.amount),
+                e('div',{className:statusClass(tx.status)},tx.status)
+              )
+            )
+          ))
+        ),
+        e(BottomNav)
+      );
+    }
+
+    function Detail({tx,onBack,onRefund}){
+      const explain = tx.status==='Open'
+        ? 'This Riverty purchase is still open. '+(tx.dueText || 'Check the due date before paying.')
+        : tx.status==='Paid'
+        ? 'This Riverty purchase has been paid'+(tx.paidOn ? ' on '+tx.paidOn : '')+'.'
+        : tx.status==='Pending'
+        ? 'Pending means the merchant has authorised the payment, but the final amount may still change.'
+        : tx.status==='Refunded'
+        ? 'This transaction is marked as refunded based on the transaction state available in this prototype.'
+        : tx.status==='Reversed'
+        ? 'This authorisation was reversed and is not shown as a completed purchase.'
+        : 'This purchase has been completed.';
+
+      return e('div',{className:'screen'},
+        e('div',{className:'toprow'}, e('button',{className:'back',onClick:onBack},'‹'), e('div',{className:'app-logo'},'riverty'), e('div',{style:{width:36}})),
+        e('div',{className:'detail-hero'},
+          e('div',{className:'detail-merchant'},tx.initials),
+          e('div',{className:'detail-title'},tx.merchant),
+          e('div',{className:'detail-amount'},tx.amount),
+          e('div',{className:'detail-source'},tx.source),
+          e('div',{style:{marginTop:10}},e('span',{className:statusClass(tx.status)},tx.status))
+        ),
+        e('div',{className:'info-card'},
+          e('div',{className:'info-row'},e('span',null,'Date'),e('strong',null,tx.date)),
+          e('div',{className:'info-row'},e('span',null,'Location'),e('strong',null,tx.location || 'Not available')),
+          e('div',{className:'info-row'},e('span',null,'How you paid'),e('strong',null,tx.source.replace('Paid with ',''))),
+          e('div',{className:'info-row'},e('span',null,'Current status'),e('strong',null,tx.status)),
+          tx.source==='Paid with Riverty' && e('div',{className:'info-row'},e('span',null,tx.status==='Paid'?'Paid on':tx.status==='Refunded'?'Refunded on':tx.status==='Open'?'Payment':'Status'),e('strong',null,tx.status==='Paid'?tx.paidOn:tx.status==='Refunded'?(tx.refundedOn||tx.date):tx.status==='Open'?(tx.dueText||'Due date unavailable'):''))
+        ),
+        e('div',{className:'timeline'},
+          e('h3',null,'Transaction timeline'),
+          e('div',{className:'event'}, e('div',{className:'event-dot'}), e('div',null,e('strong',null,'Purchase created'),e('span',null,tx.date+' · '+tx.merchant))),
+          tx.status==='Refunded' && e('div',{className:'event'}, e('div',{className:'event-dot'}), e('div',null,e('strong',null,'Refund received'),e('span',null,'Full refund · '+(tx.refund||tx.amount))))
+        ),
+        e('div',{className:'explain'},explain),
+        tx.status==='Refunded' && e('button',{className:'primary',onClick:onRefund},'View refund confirmation')
+      );
+    }
+
+    function Confirmation({tx,onBack}){
+      return e('div',{className:'screen'},
+        e('div',{className:'toprow'}, e('button',{className:'back',onClick:onBack},'‹'), e('div',{className:'app-logo'},'riverty'), e('div',{style:{width:36}})),
+        e('div',{className:'confirm'},
+          e('div',{className:'check'},'✓'),
+          e('h2',null,'Refund updated'),
+          e('p',null,'Your Riverty overview now reflects the transaction state we received.'),
+          e('div',{className:'refund-card'},
+            e('div',{className:'row'},e('span',null,'Merchant'),e('strong',null,tx.merchant)),
+            e('div',{className:'row'},e('span',null,'Original purchase'),e('strong',null,tx.amount)),
+            e('div',{className:'row'},e('span',null,'How you paid'),e('strong',null,'Riverty Card')),
+            e('div',{className:'row'},e('span',null,'Refund'),e('strong',null,tx.refund || tx.amount)),
+            e('div',{className:'row'},e('span',null,'Status'),e('strong',{style:{color:'var(--success-ink)'}},'Refunded'))
+          ),
+          e('div',{className:'explain',style:{textAlign:'left'}},'No action is required based on the current prototype transaction state. We do not infer merchant return status.'),
+          e('button',{className:'primary',onClick:onBack},'Back to overview')
+        )
+      );
+    }
+
+    function App(){
+      const [screen,setScreen] = useState('overview');
+      const [selectedId,setSelectedId] = useState('t3');
+      const [transactions] = useState(initialTransactions);
+      const selected = transactions.find(t=>t.id===selectedId) || transactions[0];
+
+      const goDetail = id => { setSelectedId(id); setScreen('detail'); };
+      const content = screen==='overview'
+        ? e(Overview,{transactions,onOpen:goDetail})
+        : screen==='detail'
+        ? e(Detail,{tx:selected,onBack:()=>setScreen('overview'),onRefund:()=>setScreen('confirmation')})
+        : e(Confirmation,{tx:selected,onBack:()=>setScreen('overview')});
+
+      return e('div',{className:'shell'},
+        e('aside',{className:'context'},
+          e('div',null,
+            e('div',{className:'brand-lockup'},e('div',{className:'logo'},'riverty'),e('div',{className:'kicker'},'Consumer Card Prototype')),
+            e('div',{className:'context-card'},
+              e('h1',null,'Unified Card + Riverty overview'),
+              e('p',null,'A focused prototype for Lena: one place to understand purchases, payment source, transaction state and refunds.'),
+              e('div',{className:'chips'},
+                e('span',{className:'chip'},'Paid with Riverty'),
+                e('span',{className:'chip'},'Paid with Riverty Card'),
+                e('span',{className:'chip'},'M6 repeat usage')
+              ),
+              e('div',{className:'demo-controls'},
+                e('button',{className:screen==='overview'?'active':'',onClick:()=>setScreen('overview')},'1 · Overview'),
+                e('button',{className:screen==='detail'?'active':'',onClick:()=>setScreen('detail')},'2 · Detail'),
+                e('button',{className:screen==='confirmation'?'active':'',onClick:()=>setScreen('confirmation')},'3 · Refund')
+              ),
+              e('div',{className:'source-note'},'Visual direction is inspired by Riverty’s public app and web presentation: calm payment-focused UI, green/mint palette, rounded cards, clear status hierarchy and minimal distraction. This is a training prototype, not an official Riverty interface.')
+            )
+          ),
+          e('div',{className:'prototype-note'},'Prototype constraints: no login, no APIs, local mock data only, React useState only. Financial states are never inferred.')
+        ),
+        e('main',{className:'stage-wrap'},
+          e('div',{className:'phone'},e(PhoneStatus),e('div',{className:'app'},content))
+        )
+      );
+    }
+
+    createRoot(document.getElementById('root')).render(e(App));
+  </script>
+</body>
+</html>
