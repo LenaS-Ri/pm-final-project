@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riverty Card: One Clear View of Every Purchase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saans:wght@400;600;700;800;900&family=Antarctican+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07162C; --fg:#ffffff; --muted:#ffffff;
+  --orange:#fb923c; --cyan:#22d3ee; --teal:#34d399; --blue:#60a5fa; --violet:#a78bfa; --pink:#f472b6;
+  --eyebrow:#fdba74; --line:rgba(251,146,60,.25);
+  --head:"Saans","Inter","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --body:"Saans","Inter","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --mono:"Antarctican Mono","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:400;line-height:1.45;font-size:clamp(13px,1.05vw,17px);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+section{min-height:100vh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,5vh,56px) clamp(24px,6vw,96px) clamp(28px,5vh,56px) clamp(24px,5vw,80px);overflow:hidden}
+section::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 500px at 88% -10%,rgba(251,146,60,.13),transparent 60%),radial-gradient(700px 500px at -5% 105%,rgba(34,211,238,.09),transparent 60%)}
+section>*{position:relative}
+.wrap{width:100%;max-width:1320px;margin:0 auto}
+
+.eyebrow{font-family:var(--mono);font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--eyebrow);font-size:.78em;margin-bottom:.7em}
+h1,h2,h3,h4{font-family:var(--head);line-height:1.08}
+h1{font-weight:900;font-size:clamp(34px,5.4vw,84px);letter-spacing:-.02em}
+h2{font-weight:800;font-size:clamp(24px,2.9vw,46px);letter-spacing:-.015em;margin-bottom:.6em}
+h3{font-weight:700;font-size:1.1em;margin-bottom:.45em}
+h4{font-weight:700;font-size:.82em;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5em}
+p{color:var(--muted)}
+.mono{font-family:var(--mono)}
+
+.card{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,1.6vw,24px)}
+.hero-card{background:linear-gradient(145deg,rgba(251,146,60,.16),rgba(34,211,238,.06) 70%);border-radius:16px;box-shadow:0 18px 44px rgba(0,0,0,.4)}
+.key{box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.grid{display:grid;gap:clamp(10px,1.2vw,18px)}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g-4-6{grid-template-columns:1.1fr 1fr}
+
+.pill{display:inline-block;border:1px solid currentColor;border-radius:999px;padding:.25em .85em;font-family:var(--mono);font-size:.78em;letter-spacing:.04em}
+.pill.orange{color:var(--orange)}.pill.cyan{color:var(--cyan)}.pill.teal{color:var(--teal)}.pill.blue{color:var(--blue)}.pill.violet{color:var(--violet)}.pill.pink{color:var(--pink)}
+.pill.ph{border-style:dashed;opacity:.8}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:.4em}
+
+.callout{border-left:4px solid var(--orange);background:rgba(251,146,60,.1);border-radius:0 14px 14px 0;padding:clamp(12px,1.4vw,20px)}
+.callout.bad{border-left-color:var(--pink);background:rgba(244,114,182,.1)}
+.callout.teal{border-left-color:var(--teal);background:rgba(52,211,153,.09)}
+
+.btn{display:inline-flex;align-items:center;gap:.6em;background:var(--orange);color:#07162C;font-weight:800;text-decoration:none;border-radius:999px;padding:.7em 1.4em;box-shadow:0 10px 26px rgba(251,146,60,.35);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--orange);border:1px solid var(--orange);box-shadow:none}
+.note{font-family:var(--mono);font-size:.72em;color:var(--eyebrow);opacity:.9;margin-top:.5em}
+
+ul.clean{list-style:none}
+ul.clean li{padding-left:1.1em;position:relative;margin-bottom:.35em;color:var(--fg)}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.small{font-size:.88em}
+.xs{font-size:.8em}
+blockquote{border-left:3px solid var(--cyan);padding-left:.9em;margin:.5em 0;font-style:italic}
+blockquote span{display:block;font-style:normal;font-family:var(--mono);font-size:.78em;color:var(--cyan);margin-top:.2em}
+
+/* Cover */
+.cover h1{max-width:16ch}
+.cover .pitch{max-width:62ch;font-size:1.25em;margin:1.1em 0 1.6em}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:.5em 1.2em;font-size:.95em;align-items:center}
+.meta .mono{color:var(--eyebrow);font-size:.78em;text-transform:uppercase;letter-spacing:.12em}
+.brandmark{position:absolute;top:clamp(20px,4vh,40px);left:clamp(24px,5vw,80px);font-family:var(--mono);letter-spacing:.14em;font-size:.8em;color:var(--eyebrow);text-transform:uppercase}
+
+/* Journey */
+.journey{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:clamp(10px,1.6vh,20px)}
+.step{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:14px;padding:12px 14px;position:relative;font-size:.85em}
+.step .n{font-family:var(--mono);color:var(--cyan);font-size:.8em;margin-bottom:.3em;display:block}
+.step b{display:block;margin-bottom:.3em;font-family:var(--head);font-weight:700}
+.step.misery{border-color:var(--pink);background:linear-gradient(160deg,rgba(244,114,182,.22),rgba(244,114,182,.05));box-shadow:0 12px 30px rgba(244,114,182,.18)}
+.step.misery .n{color:var(--pink)}
+.step.misery::after{content:"Moment of misery";position:absolute;top:-11px;right:12px;background:var(--pink);color:#07162C;font-family:var(--mono);font-size:.68em;font-weight:500;padding:.15em .7em;border-radius:999px}
+
+/* MoSCoW */
+.col h4{padding-bottom:.4em;border-bottom:2px solid currentColor}
+.col.m{color:var(--orange)}.col.s{color:var(--cyan)}.col.c{color:var(--teal)}.col.w{color:var(--violet)}
+.col li{color:var(--fg);font-size:.82em;margin-bottom:.3em}
+.col ul{list-style:none}
+.col li::before{content:"";}
+
+/* Experiment */
+.kv{display:grid;grid-template-columns:150px 1fr;gap:.35em 1em;font-size:.86em}
+.kv dt{font-family:var(--mono);color:var(--eyebrow);font-size:.82em;text-transform:uppercase;letter-spacing:.08em}
+.kv dd{color:var(--fg)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rule{border-radius:14px;padding:12px 14px;border:1px solid;font-size:.84em}
+.rule.ship{color:var(--teal);background:rgba(52,211,153,.08)}
+.rule.iter{color:var(--orange);background:rgba(251,146,60,.08)}
+.rule.kill{color:var(--pink);background:rgba(244,114,182,.08)}
+.rule b{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.3em}
+.rule span{color:var(--fg)}
+
+/* metrics */
+.metric{text-align:left}
+.metric .big{font-family:var(--mono);font-weight:500;font-size:clamp(26px,3.2vw,50px);color:var(--cyan);line-height:1}
+.metric .lbl{font-weight:700;margin:.5em 0 .2em}
+
+/* nav */
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--orange),var(--cyan));z-index:50}
+#dots{position:fixed;right:clamp(10px,1.6vw,24px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:50}
+#dots a{width:10px;height:10px;border-radius:50%;border:1px solid var(--orange);display:block;transition:all .2s}
+#dots a.on{background:var(--orange);transform:scale(1.35)}
+.counter{position:absolute;bottom:clamp(14px,3vh,28px);right:clamp(24px,6vw,96px);font-family:var(--mono);font-size:.72em;color:var(--eyebrow);opacity:.8}
+
+@media (max-width:900px){
+  .g2,.g3,.g4,.g-4-6,.vs,.rules{grid-template-columns:1fr}
+  .journey{grid-template-columns:1fr}
+  .kv{grid-template-columns:1fr}
+  section{min-height:100vh;height:auto}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav id="dots" aria-label="Slide navigation"></nav>
+
+<!-- 1 COVER -->
+<section id="s1" class="cover" data-title="Cover">
+  <div class="brandmark">Riverty · Product School PM certification</div>
+  <div class="wrap">
+    <div class="eyebrow">Final project · Cards go-to-market</div>
+    <h1>Riverty Card: One Clear View of Every Purchase</h1>
+    <p class="pitch">The Riverty Card combines Mastercard's reach with BNPL flexibility, bringing card and checkout purchases into one clear overview that gives users visibility and control over their payments.</p>
+    <div class="meta">
+      <span class="mono">Name / cohort</span><span>Lena Stickling - cohort 1 - October 2026</span>
+      <span class="mono">Repo</span><a href="https://github.com/LenaS-Ri/pm-final-project" target="_blank" rel="noopener" style="color:var(--cyan)">https://github.com/LenaS-Ri/pm-final-project</a>
+      <span class="mono">Prototype</span><span><a class="btn proto-link" href="#" target="_blank" rel="noopener">View prototype</a></span>
+    </div>
+    <p class="note proto-note">Placeholder: paste the prototype share link into PROTOTYPE_URL at the bottom of this file.</p>
+  </div>
+  <div class="counter">1 / 8</div>
+</section>
+
+<!-- 2 STRATEGY -->
+<section id="s2" data-title="Strategy">
+  <div class="wrap">
+    <div class="eyebrow">Slide 5 · Strategy</div>
+    <h2>Why Riverty needs a card, and why now</h2>
+    <div class="grid g2">
+      <div class="card hero-card key">
+        <h4 style="color:var(--orange)">Problem hook</h4>
+        <p style="color:var(--fg);font-size:1.12em;font-weight:700">Riverty risks losing relevance beyond existing merchants' checkouts, while consumers like Lena lack one flexible payment relationship that keeps them in control, especially when things don't go as planned.</p>
+      </div>
+      <div class="card">
+        <h4 style="color:var(--cyan)">Value proposition</h4>
+        <p class="small" style="color:var(--fg)">The Riverty Card combines the broad acceptance of Mastercard with the flexibility of Riverty's BNPL experience, enabling customers to pay wherever Mastercard is accepted while staying in control of their finances.</p>
+        <p class="small" style="margin-top:.6em;color:var(--fg)">By integrating card and checkout purchases into one clear overview in the existing Riverty app, customers like Lena can easily see what they owe, understand payment statuses and manage their purchases without switching between different payment experiences.</p>
+        <p class="small" style="margin-top:.6em;color:var(--fg)">For Riverty, this creates a direct, everyday consumer relationship beyond merchant checkouts, driving repeat card usage and retention while strengthening its merchant-first ecosystem.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:clamp(12px,2vh,22px)">
+      <h4 style="color:var(--orange)">Data-backed hypothesis</h4>
+      <p style="color:var(--fg)">Based on recurring qualitative evidence of fragmented payment visibility and return-related uncertainty, supported by a simulated baseline of <b>12.5 return-related payment enquiries per 1,000 transactions</b>, I believe that giving Lena one broadly accepted payment relationship with flexible repayment and a unified payment overview will result in increased repeat Riverty usage, as measured by <b>≥50% of activated cardholders completing at least 2 Riverty Card transactions in Month 6</b>. I will protect partner-merchant checkout conversion, allowing no more than a 1pp decline, and will make a go/no-go decision after 6 months with at least 1,000 activated cardholders.</p>
+    </div>
+  </div>
+  <div class="counter">2 / 8</div>
+</section>
+
+<!-- 3 RESEARCH -->
+<section id="s3" data-title="Research">
+  <div class="wrap">
+    <div class="eyebrow">Slide 6 · Research</div>
+    <h2>Lena has to become her own payment operations manager</h2>
+    <div class="grid g-4-6">
+      <div class="card">
+        <h4 style="color:var(--cyan)">Workaround: the manual process</h4>
+        <ul class="clean small">
+          <li><b>Checks multiple providers.</b> Opens Klarna, PayPal and/or Riverty separately.</li>
+          <li><b>Cross-checks emails and notifications</b> to work out upcoming payment dates.</li>
+          <li><b>Checks the merchant separately</b> to verify a return was received and refunded.</li>
+          <li><b>Manually reconciles</b> return status against the outstanding BNPL invoice.</li>
+          <li><b>Creates her own reminders</b> (inferred, to be validated in research).</li>
+          <li><b>Falls back to another payment method</b> such as PayPal, Klarna or her existing card.</li>
+        </ul>
+        <p class="small" style="margin-top:.6em;color:var(--fg)"><b>Core frustration:</b> she has to reconstruct her financial position herself from systems with no single source of truth: What do I owe? When will I pay? Has my return changed that?</p>
+      </div>
+      <div class="grid" style="align-content:start">
+        <div class="card hero-card">
+          <h4 style="color:var(--orange)">Evidence</h4>
+          <blockquote>"That's actually the annoying part. Everything is scattered."<span>INT-05 · moderate BNPL user managing several outstanding purchases</span></blockquote>
+          <blockquote>"Returned order 8 days ago but invoice still shows full amount. Do I need to pay this now? I don't want a late fee while waiting for the merchant."<span>SUP-18421</span></blockquote>
+        </div>
+        <div class="card">
+          <h4 style="color:var(--teal)">Advantages vs. the workaround</h4>
+          <ul class="clean small">
+            <li><b>Broad reach:</b> one Riverty relationship across merchants and online/offline purchases.</li>
+            <li><b>Unified overview:</b> replaces checking multiple providers, emails and reminders.</li>
+            <li><b>Integrated control:</b> payment flexibility, visibility and issue handling in one experience.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="journey" aria-label="Future-state journey map">
+      <div class="step"><span class="n">1 · SHOP &amp; PAY</span>Lena shops online or in-store and uses her Riverty Card wherever Mastercard is accepted, instead of depending on merchant checkout availability.</div>
+      <div class="step"><span class="n">2 · CHECK PURCHASES</span>She opens the Riverty app to review her card and existing Riverty checkout purchases.</div>
+      <div class="step misery"><span class="n">3 · MOMENT OF MISERY</span>She has returned an item but is unsure whether the refund has been processed, what she still owes or when payment is due. Previously, she pieced together information from different sources.</div>
+      <div class="step"><span class="n">4 · SOLUTION</span>The unified chronological overview shows card and checkout purchases together, with clear payment-source labels, amounts and statuses.</div>
+      <div class="step"><span class="n">5 · OUTCOME</span>Lena finds the purchase, checks its recorded payment or refund status and understands what requires her attention.</div>
+    </div>
+  </div>
+  <div class="counter">3 / 8</div>
+</section>
+
+<!-- 4 BLUEPRINT -->
+<section id="s4" data-title="Blueprint">
+  <div class="wrap">
+    <div class="eyebrow">Slide 7 · Blueprint</div>
+    <h2>Unified Card + BNPL Overview: scope and PRD</h2>
+    <div class="grid g4">
+      <div class="card col m key"><h4>Must</h4><ul>
+        <li>Unified transaction feed</li><li>Clear purchase-source labels: “Paid with Riverty” vs. “Paid with Riverty Card”</li><li>Core details: merchant, amount, date, status</li><li>Status handling: Pending, Completed, Refunded, Reversed</li><li>Refund/reversal linked to the original transaction</li><li>One chronological ordering</li><li>Transaction detail view</li></ul></div>
+      <div class="card col s"><h4>Should</h4><ul>
+        <li>Transaction filters</li><li>Merchant search</li><li>Attention-needed indicators</li><li>Card balance summary</li><li>Merchant-name enrichment</li><li>Contextual explanations</li></ul></div>
+      <div class="card col c"><h4>Could</h4><ul>
+        <li>Spending categories and monthly summaries</li><li>Merchant logos</li><li>Advanced search and filtering</li><li>Custom transaction tags</li><li>Transaction-history export</li><li>Personalised spending insights</li><li>Merchant location/map</li></ul></div>
+      <div class="card col w"><h4>Won't (now)</h4><ul>
+        <li>Flexible Card Repayment configuration</li><li>Apple Pay / Google Pay setup</li><li>Physical card management</li><li>Rewards or cashback</li><li>Premium card benefits</li><li>Dispute and chargeback workflows</li><li>Advanced budgeting</li><li>New credit decisioning or identity verification</li><li>Major app redesign</li><li>Automatic merchant-return reconciliation</li></ul></div>
+    </div>
+    <div class="grid g-4-6" style="margin-top:clamp(10px,1.6vh,18px)">
+      <div class="card">
+        <h4 style="color:var(--orange)">PRD highlights</h4>
+        <ul class="clean small">
+          <li><b>JTBD:</b> “Help me stay in control of what I owe and when I pay, wherever I shop.”</li>
+          <li><b>Three screens:</b> Riverty Overview, Card Transaction Detail, Refund Updated.</li>
+          <li><b>Safety guard:</b> the UI never infers a return or refund from context. “Status unavailable” beats a plausible but fabricated explanation.</li>
+          <li><b>Scope rule:</b> the prototype shows transaction state. It does not create or control it.</li>
+          <li><b>Now lane:</b> Consumer Card Onboarding Journey, Virtual Card Provisioning.</li>
+        </ul>
+      </div>
+      <div class="card hero-card key" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:.8em">
+        <h4 style="color:var(--cyan)">Prototype</h4>
+        <p class="small" style="color:var(--fg)">Working prototype built from the PRD: local mock data, three screens, no backend.</p>
+        <a class="btn proto-link" href="#" target="_blank" rel="noopener">View prototype</a>
+        <p class="note proto-note">Placeholder: paste the prototype share link into PROTOTYPE_URL at the bottom of this file.</p>
+      </div>
+    </div>
+  </div>
+  <div class="counter">4 / 8</div>
+</section>
+
+<!-- 5 VALIDATION -->
+<section id="s5" data-title="Validation">
+  <div class="wrap">
+    <div class="eyebrow">Slide 8 · Validation</div>
+    <h2>A/B experiment: grouped sections vs. one chronological feed</h2>
+    <div class="grid g2">
+      <div class="card hero-card key">
+        <h4 style="color:var(--orange)">Hypothesis &amp; metrics</h4>
+        <dl class="kv">
+          <dt>Feature</dt><dd>Unified Card + BNPL Overview in Riverty App (2 variants)</dd>
+          <dt>Persona</dt><dd>Lena, 32, mobile-first BNPL user who wants control over purchases, returns and payment obligations</dd>
+          <dt>Expected outcome</dt><dd>Users find and understand purchases more easily in one chronological overview, reducing the need to contact customer service</dd>
+          <dt>Primary metric</dt><dd>Overview-related CS contacts per 1,000 invoice-equivalent transaction records (long-term: M6 Active Card Rate ≥50%)</dd>
+          <dt>Baseline</dt><dd>120 contacts per 1,000 invoices (simulated)</dd>
+          <dt>MDE</dt><dd>−20 contacts per 1,000 invoices (−16.7%)</dd>
+          <dt>Guardrails</dt><dd>Partner-merchant checkout conversion: no decline over 1pp vs. baseline/control. No increase in unresolved payment complaints or incorrect financial-status information</dd>
+          <dt>Design</dt><dd>4,500 invoices per arm · 50/50 split · 30 days or until sample reached · 95% confidence, two-sided, p &lt; 0.05</dd>
+        </dl>
+      </div>
+      <div class="grid" style="align-content:start">
+        <div class="vs">
+          <div class="card"><h4 style="color:var(--cyan)">Control (A)</h4><p class="small" style="color:var(--fg)">Card and checkout purchases in the same overview, grouped into two sections: “Paid with Riverty” and “Paid with Riverty Card.”</p></div>
+          <div class="card" style="border-color:var(--orange)"><h4 style="color:var(--orange)">Variant (B)</h4><p class="small" style="color:var(--fg)">Card and checkout purchases together in one chronological feed, each with a “Paid with Riverty” or “Paid with Riverty Card” label.</p></div>
+        </div>
+        <div class="card"><h4 style="color:var(--teal)">Held constant</h4><p class="small" style="color:var(--fg)">Identical data, amounts, dates, statuses, labels, details and refund information. The only difference is transaction organisation: grouped by payment method vs. one chronological feed.</p></div>
+      </div>
+    </div>
+    <div class="rules" style="margin-top:clamp(10px,1.6vh,18px)">
+      <div class="rule ship"><b>Ship</b><span>Primary metric improves by ≥ −20 contacts per 1,000 invoices at 95% confidence and the merchant-conversion guardrail holds.</span></div>
+      <div class="rule iter"><b>Iterate</b><span>Direction is positive but lift is below the MDE.</span></div>
+      <div class="rule kill"><b>Kill</b><span>Primary metric shows no improvement or moves negatively. Read date is fixed: no results reviewed before it.</span></div>
+    </div>
+  </div>
+  <div class="counter">5 / 8</div>
+</section>
+
+<!-- 6 LAUNCH -->
+<section id="s6" data-title="Launch">
+  <div class="wrap">
+    <div class="eyebrow">Slide 9 · Launch</div>
+    <h2>Go-to-market and success metrics</h2>
+    <div class="card" style="margin-bottom:clamp(10px,1.8vh,20px)">
+      <h4 style="color:var(--orange)">GTM strategy</h4>
+      <div class="grid g4 small">
+        <div><div class="mono xs" style="color:var(--eyebrow)">GOAL</div><div class="pills"><span class="pill orange ph">To be defined</span></div></div>
+        <div><div class="mono xs" style="color:var(--eyebrow)">AUDIENCE</div><div class="pills"><span class="pill cyan ph">To be defined</span></div></div>
+        <div><div class="mono xs" style="color:var(--eyebrow)">TIER</div><div class="pills"><span class="pill teal ph">To be defined</span></div></div>
+        <div><div class="mono xs" style="color:var(--eyebrow)">CHANNELS</div><div class="pills"><span class="pill violet ph">To be defined</span></div></div>
+      </div>
+      <p class="note">Placeholder: GTM goal, audience, tier and channels were not part of the supplied content.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card metric key"><div class="big">≥80%</div><div class="lbl">Feature Discovery Rate</div><p class="small">of eligible Riverty Card users open the unified overview within 14 days.</p></div>
+      <div class="card metric key"><div class="big">≥50%</div><div class="lbl">30-Day Repeat Overview Usage</div><p class="small">of eligible cardholders access the overview on at least 2 distinct days within 30 days.</p></div>
+      <div class="card metric key"><div class="big">≤100</div><div class="lbl">Customer Service Contact Rate</div><p class="small">overview-related contacts per 1,000 invoice-equivalent transactions, indicating reduced confusion about purchases, payments and refunds.</p></div>
+    </div>
+    <div class="callout bad" style="margin-top:clamp(10px,1.8vh,20px)">
+      <h4 style="color:var(--pink)">Bad signal</h4>
+      <p style="color:var(--fg)">High discovery (≥80%) but low repeat usage (below 35%) indicates the feature is being noticed but not delivering sustained value. Incorrect payment or refund information triggers immediate investigation and potential rollout suspension.</p>
+    </div>
+  </div>
+  <div class="counter">6 / 8</div>
+</section>
+
+<!-- 7 STORY -->
+<section id="s7" data-title="Story">
+  <div class="wrap">
+    <div class="eyebrow">Slide 10 · Story</div>
+    <h2>What was hard, and what changed my mind</h2>
+    <div class="grid g2">
+      <div class="card"><h4 style="color:var(--pink)">Friction point</h4>
+        <p style="color:var(--fg);font-size:1.15em">Hard: being able to reasonably revise and criticize what AI gave me under given time constraints and push.</p></div>
+      <div class="card hero-card key"><h4 style="color:var(--orange)">Aha moment</h4>
+        <p style="color:var(--fg);font-size:1.15em">Loved the push for experimentation and just do it overall.</p></div>
+    </div>
+    <div class="callout teal" style="margin-top:clamp(12px,2vh,22px)">
+      <h4 style="color:var(--teal)">Key takeaways / next</h4>
+      <p style="color:var(--fg);font-size:1.4em;font-weight:800">Do - do - do! :-)</p>
+    </div>
+  </div>
+  <div class="counter">7 / 8</div>
+</section>
+
+<!-- 8 THANK YOU -->
+<section id="s8" data-title="Submit">
+  <div class="wrap" style="text-align:left">
+    <div class="eyebrow">Thank you</div>
+    <h1 style="font-size:clamp(34px,5vw,76px)">Thank you</h1>
+    <p style="font-size:1.2em;margin:.8em 0 1.2em">Riverty Card: One Clear View of Every Purchase</p>
+    <div class="meta">
+      <span class="mono">Repo</span><a href="https://github.com/LenaS-Ri/pm-final-project" target="_blank" rel="noopener" style="color:var(--cyan)">https://github.com/LenaS-Ri/pm-final-project</a>
+      <span class="mono">Cohort</span><span class="pill orange" style="justify-self:start">cohort 1 · October 2026</span>
+    </div>
+    <div style="margin-top:1.6em"><span class="pill teal" style="font-size:.95em;padding:.6em 1.3em">Submit to the learning platform</span></div>
+  </div>
+  <div class="counter">8 / 8</div>
+</section>
+
+<script>
+/* Paste the prototype share link here. Leave empty to show the placeholder. */
+var PROTOTYPE_URL = "";
+
+(function(){
+  var links=document.querySelectorAll('.proto-link'), notes=document.querySelectorAll('.proto-note');
+  if(PROTOTYPE_URL){
+    links.forEach(function(a){a.href=PROTOTYPE_URL});
+    notes.forEach(function(n){n.style.display='none'});
+  } else {
+    links.forEach(function(a){a.addEventListener('click',function(e){e.preventDefault()})});
+  }
+
+  var secs=[].slice.call(document.querySelectorAll('section'));
+  var dots=document.getElementById('dots'), bar=document.getElementById('progress');
+  secs.forEach(function(s,i){
+    var a=document.createElement('a');a.href='#'+s.id;a.title=s.dataset.title||('Slide '+(i+1));
+    a.setAttribute('aria-label',a.title);dots.appendChild(a);
+  });
+  var dotEls=[].slice.call(dots.children);
+  function cur(){
+    var y=window.scrollY+window.innerHeight/2, idx=0;
+    secs.forEach(function(s,i){if(s.offsetTop<=y)idx=i});
+    return idx;
+  }
+  function update(){
+    var max=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(max>0?window.scrollY/max*100:0)+'%';
+    var c=cur();dotEls.forEach(function(d,i){d.classList.toggle('on',i===c)});
+  }
+  function go(i){i=Math.max(0,Math.min(secs.length-1,i));secs[i].scrollIntoView({behavior:'smooth'})}
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  document.addEventListener('keydown',function(e){
+    if(e.target.closest&&e.target.closest('a,button,input,textarea')&&e.key===' ')return;
+    switch(e.key){
+      case 'ArrowDown':case ' ':case 'PageDown':e.preventDefault();go(cur()+1);break;
+      case 'ArrowUp':case 'PageUp':e.preventDefault();go(cur()-1);break;
+      case 'Home':e.preventDefault();go(0);break;
+      case 'End':e.preventDefault();go(secs.length-1);break;
+      case 'Escape':go(0);break;
+    }
+  });
+  update();
+})();
+</script>
+</body>
+</html>
